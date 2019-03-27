@@ -4,11 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Mixer {
+
+    private static final String osPathSeparator = FileSystems.getDefault().getSeparator();
 
     public static void run(String[] parameters) {
         try {
@@ -35,7 +38,7 @@ public class Mixer {
         System.out.println("Trying to clean previously added mix prefix");
         String initName = getInitName(file.getName());
         if (!initName.equals(file.getName())) {
-            return renameFile(file, file.getParent() + "/" + initName); //TODO OS-dependent path separator
+            return renameFile(file, file.getParent() + osPathSeparator + initName);
         } else {
             return file;
         }
@@ -67,7 +70,7 @@ public class Mixer {
     }
 
     private static String getNewMixedName(File oldFile) {
-        return oldFile.getParent() + "/" + getRandomNumber() + "m-" + oldFile.getName(); //TODO OS-dependent path separator
+        return oldFile.getParent() + osPathSeparator + getRandomNumber() + "m-" + oldFile.getName();
     }
 
     private static int getRandomNumber() {

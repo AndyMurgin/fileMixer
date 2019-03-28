@@ -14,6 +14,14 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>info.picocli</groupId>
+            <artifactId>picocli</artifactId>
+            <version>3.9.5</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <finalName>fmix</finalName>
         <plugins>
@@ -37,7 +45,7 @@
                         <id>copy-dependencies</id>
                         <phase>prepare-package</phase>
                         <goals>
-                            <goal>copy-dependencies</goal>
+                                <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}/lib</outputDirectory>
@@ -57,7 +65,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.amur.fileMixer.Main</mainClass>
+                            <mainClass>com.amur.fileMixer.cli.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

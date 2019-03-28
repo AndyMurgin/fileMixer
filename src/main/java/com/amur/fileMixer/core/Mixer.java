@@ -5,29 +5,28 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class Mixer {
 
     private static final String osPathSeparator = FileSystems.getDefault().getSeparator();
 
-    public static void run(String[] parameters) {
+    // need redesign in case if more parameters occur
+    public static void run(File filesDirectory, boolean cleanMixPrefix) {
         try {
-            ParametersHolder parametersHolder = InputParser.getParameters(parameters);
-            System.out.println("Getting files from directory " + parametersHolder.getFilesDirectory());
-            Files.newDirectoryStream(Paths.get(parametersHolder.getFilesDirectory()),
-                    path -> path.toFile().isFile())
-                    .forEach(path -> Mixer.addPrefix(path, parametersHolder.isCleanMixPrefix()));
+            System.out.println("Getting files from directory " + filesDirectory.getCanonicalPath());
+
+            File[] files = filesDirectory.listFiles(File::isFile);
+            Objects.requireNonNull(files);
+            Arrays.asList(files).forEach(file -> Mixer.addPrefix(file, cleanMixPrefix));
         } catch (IOException e) {
-            System.err.println("Unable to process files in directory " + parameters + " : " + e.getMessage());
-            throw new RuntimeException(e);
+            System.err.println("Error occured during mixing: " + e.getMessage());
         }
     }
 
-    private static void addPrefix(Path path, boolean cleanMixPrefix) {
-        File file = path.toFile();
+    private static void addPrefix(File file, boolean cleanMixPrefix) {
+        System.out.println("Processing " + file.getName());
         if (cleanMixPrefix) {
             file = tryCleanMixPrefix(file);
         }

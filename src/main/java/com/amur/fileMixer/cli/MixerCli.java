@@ -1,6 +1,6 @@
 package com.amur.fileMixer.cli;
 
-import com.amur.fileMixer.core.Mixer;
+import com.amur.fileMixer.api.Mixer;
 import com.amur.fileMixer.validation.InputParametersValidator;
 import com.amur.fileMixer.validation.ValidationResult;
 import picocli.CommandLine.Command;
@@ -21,12 +21,18 @@ public class MixerCli implements Callable<Void> {
     @Parameters(index = "0", paramLabel = "DIRECTORY", description = "Full path to directory with files required to be mixed")
     private File filesDirectory;
 
+    private Mixer mixer;
+
+    public MixerCli(Mixer mixer) {
+        this.mixer = mixer;
+    }
+
     @Override
     public Void call() {
         boolean validationPassed = validate();
         if (validationPassed) {
             System.out.println("@Amur Files Mixer - let's mess your files!");
-            Mixer.run(filesDirectory, cleanOldPrefix);
+            mixer.mix(filesDirectory, cleanOldPrefix);
             System.out.println("Done! Enjoy your new files order :)");
         }
         return null;
@@ -39,5 +45,13 @@ public class MixerCli implements Callable<Void> {
             printStream.println(String.join("\n", result.getMessages()));
         }
         return result.isSucceed();
+    }
+
+    boolean isCleanOldPrefix() {
+        return cleanOldPrefix;
+    }
+
+    File getFilesDirectory() {
+        return filesDirectory;
     }
 }

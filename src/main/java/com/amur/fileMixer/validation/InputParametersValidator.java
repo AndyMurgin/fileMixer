@@ -1,11 +1,14 @@
 package com.amur.fileMixer.validation;
 
+import com.amur.fileMixer.api.ParametersValidator;
+
 import java.io.File;
 import java.io.IOException;
 
-public class InputParametersValidator {
+public class InputParametersValidator implements ParametersValidator {
 
-    public static ValidationResult validateFilesDirectory(File directory) {
+    @Override
+    public ValidationResult validateFilesDirectory(File directory) {
         String fileCanonicalPath;
         try {
             fileCanonicalPath = directory.getCanonicalPath();

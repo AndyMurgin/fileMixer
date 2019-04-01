@@ -1,6 +1,7 @@
 package com.amur.fileMixer.cli;
 
 import com.amur.fileMixer.api.Mixer;
+import com.amur.fileMixer.api.ParametersValidator;
 import com.amur.fileMixer.validation.InputParametersValidator;
 import com.amur.fileMixer.validation.ValidationResult;
 import picocli.CommandLine.Command;
@@ -21,10 +22,12 @@ public class MixerCli implements Callable<Void> {
     @Parameters(index = "0", paramLabel = "DIRECTORY", description = "Full path to directory with files required to be mixed")
     private File filesDirectory;
 
-    private Mixer mixer;
+    private final Mixer mixer;
+    private final ParametersValidator validator;
 
-    public MixerCli(Mixer mixer) {
+    public MixerCli(Mixer mixer, ParametersValidator validator) {
         this.mixer = mixer;
+        this.validator = validator;
     }
 
     @Override
@@ -39,7 +42,7 @@ public class MixerCli implements Callable<Void> {
     }
 
     private boolean validate() {
-        ValidationResult result = InputParametersValidator.validateFilesDirectory(filesDirectory);
+        ValidationResult result = validator.validateFilesDirectory(filesDirectory);
         if (result.getMessages().size() != 0) {
             PrintStream printStream = result.isSucceed() ? System.out : System.err;
             printStream.println(String.join("\n", result.getMessages()));

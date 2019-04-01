@@ -78,7 +78,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.amur.fileMixer.cli.Main</mainClass>
+                            <mainClass>com.amur.fileMixer.cli.Starter</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

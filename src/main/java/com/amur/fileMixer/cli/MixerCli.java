@@ -2,7 +2,6 @@ package com.amur.fileMixer.cli;
 
 import com.amur.fileMixer.api.Mixer;
 import com.amur.fileMixer.api.ParametersValidator;
-import com.amur.fileMixer.validation.InputParametersValidator;
 import com.amur.fileMixer.validation.ValidationResult;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
